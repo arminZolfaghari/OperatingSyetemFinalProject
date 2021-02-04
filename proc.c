@@ -532,3 +532,8 @@ procdump(void)
     cprintf("\n");
   }
 }
+
+int testGetYear(void)
+{
+  return 2021;
+}
