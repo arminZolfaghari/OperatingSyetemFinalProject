@@ -100,3 +100,8 @@ int sys_getParentID(void)
 {
   return getParentID();
 }
+
+int sys_getSyscallCounter(void)
+{
+  return getSyscallCounter();
+}

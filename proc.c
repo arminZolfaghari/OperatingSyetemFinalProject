@@ -548,3 +548,9 @@ int getParentID(void)
   int parentIDOfCurProc = parentOfCurProc->pid;
   return parentIDOfCurProc;
 }
+
+
+int getSyscallCounter(void)
+{
+  return 2021;
+}
