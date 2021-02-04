@@ -94,3 +94,9 @@ int sys_testGetYear(void)
 {
   return testGetYear();
 }
+
+
+int sys_getParentID(void)
+{
+  return getParentID();
+}

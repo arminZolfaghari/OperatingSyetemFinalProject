@@ -537,3 +537,14 @@ int testGetYear(void)
 {
   return 2021;
 }
+
+
+int getParentID(void)
+{
+  //get current process
+  struct proc *curproc = myproc();
+  
+  struct proc *parentOfCurProc = curproc->parent;
+  int parentIDOfCurProc = parentOfCurProc->pid;
+  return parentIDOfCurProc;
+}
