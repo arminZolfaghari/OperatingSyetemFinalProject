@@ -550,7 +550,10 @@ int getParentID(void)
 }
 
 
-int getSyscallCounter(void)
+int getSyscallCounter(int systemcallNumber)
 {
-  return 2021;
+  //get current process
+  struct proc *curproc = myproc();
+  int syscallCounter = curproc->syscallCounter[systemcallNumber];
+  return syscallCounter;
 }

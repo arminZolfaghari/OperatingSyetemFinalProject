@@ -95,13 +95,25 @@ int sys_testGetYear(void)
   return testGetYear();
 }
 
-
 int sys_getParentID(void)
 {
   return getParentID();
 }
 
+
+// extern int syscallNums;
+// extern int (*syscalls[26])(void);
+// extern int systemcallNos;
+int syscallNums = 25;
+
 int sys_getSyscallCounter(void)
 {
-  return getSyscallCounter();
+  int systemcallNumber;
+
+  if(argint(0, &systemcallNumber) > syscallNums || (systemcallNumber < 0)) {
+  // if(argint(0, &systemcallNumber) > syscallNums || (systemcallNumber < 0) || !(syscalls[systemcallNumber])) {
+  // if(argint(0, &systemcallNumber) > systemcallNos || (systemcallNumber < 0) ) {
+    return -1;
+  }
+  return getSyscallCounter(systemcallNumber);
 }

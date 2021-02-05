@@ -22,4 +22,7 @@
 #define SYS_close  21
 #define SYS_testGetYear 22
 #define SYS_getParentID 23
-#define SYS_getSyscallCounter 24
+#define SYS_getSyscallCounter 25
+
+
+// #define syscallNums 25
