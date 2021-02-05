@@ -183,12 +183,9 @@ UPROGS=\
 	_zombie\
 	_testMyProgram\
 	_getParentIDtest\
-<<<<<<< HEAD
 	_myProgram\
 	_getSyscallCountertest\
-=======
 	_getChildrenTest\
->>>>>>> d8645278e86fcce381dc7541c926f77531af4bcd
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)
