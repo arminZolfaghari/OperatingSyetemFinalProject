@@ -260,12 +260,9 @@ EXTRA=\
 	ln.c ls.c mkdir.c rm.c stressfs.c usertests.c wc.c zombie.c\
 	testMyProgram\
 	getParentIDtest\
-<<<<<<< HEAD
 	myProgram.c\
 	getSyscallCountertest.c\
-=======
 	getChildrenTest\
->>>>>>> d8645278e86fcce381dc7541c926f77531af4bcd
 	printf.c umalloc.c\
 	README dot-bochsrc *.pl toc.* runoff runoff1 runoff.list\
 	.gdbinit.tmpl gdbutil\

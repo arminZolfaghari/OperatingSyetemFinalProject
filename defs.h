@@ -122,11 +122,8 @@ void            wakeup(void*);
 void            yield(void);
 int             testGetYear(void);
 int             getParentID(void);
-<<<<<<< HEAD
 int             getSyscallCounter(int);
-=======
 int             getChildren(int* childrenPIDAddress);
->>>>>>> d8645278e86fcce381dc7541c926f77531af4bcd
 
 // swtch.S
 void            swtch(struct context**, struct context*);
