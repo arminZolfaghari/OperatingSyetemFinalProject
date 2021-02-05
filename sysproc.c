@@ -100,3 +100,13 @@ int sys_getParentID(void)
 {
   return getParentID();
 }
+
+int sys_getChildren(void)
+{
+  int* childrenPIDAddress;
+  if(argptr(0, (void *) &childrenPIDAddress, sizeof(*childrenPIDAddress)) == -1)
+    return -1;
+  else{
+    return getChildren(childrenPIDAddress);
+  }
+}

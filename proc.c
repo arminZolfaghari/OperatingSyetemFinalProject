@@ -548,3 +548,25 @@ int getParentID(void)
   int parentIDOfCurProc = parentOfCurProc->pid;
   return parentIDOfCurProc;
 }
+
+
+int getChildren(int* childrenPIDAddress)
+{
+  //get current process
+  struct proc *curproc = myproc();
+  int curProcPID = curproc->pid;
+
+  int counterChildern = 0;
+
+  acquire(&ptable.lock);
+  struct proc *p;
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++)
+      if(p->parent->pid == curProcPID)
+      {
+        *(childrenPIDAddress + counterChildern) = p->pid;
+        counterChildern++;
+      }
+
+  release(&ptable.lock);
+  return counterChildern;
+}

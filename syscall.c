@@ -105,6 +105,7 @@ extern int sys_write(void);
 extern int sys_uptime(void);
 extern int sys_testGetYear(void);
 extern int sys_getParentID(void);
+extern int sys_getChildren(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -130,6 +131,7 @@ static int (*syscalls[])(void) = {
 [SYS_close]   sys_close,
 [SYS_testGetYear] sys_testGetYear,
 [SYS_getParentID] sys_getParentID,
+[SYS_getChildren] sys_getChildren,
 };
 
 void

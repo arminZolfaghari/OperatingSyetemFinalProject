@@ -25,6 +25,7 @@ int sleep(int);
 int uptime(void);
 int testGetYear(void);
 int getParentID(void);
+int getChildren(int* childrenPIDAddress);
 
 // ulib.c
 int stat(const char*, struct stat*);
