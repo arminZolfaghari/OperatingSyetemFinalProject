@@ -31,4 +31,8 @@ SYSCALL(sleep)
 SYSCALL(uptime)
 SYSCALL(testGetYear)
 SYSCALL(getParentID)
+<<<<<<< HEAD
 SYSCALL(getSyscallCounter)
+=======
+SYSCALL(getChildren)
+>>>>>>> d8645278e86fcce381dc7541c926f77531af4bcd

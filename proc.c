@@ -550,10 +550,32 @@ int getParentID(void)
 }
 
 
+<<<<<<< HEAD
 int getSyscallCounter(int systemcallNumber)
 {
   //get current process
   struct proc *curproc = myproc();
   int syscallCounter = curproc->syscallCounter[systemcallNumber];
   return syscallCounter;
+=======
+int getChildren(int* childrenPIDAddress)
+{
+  //get current process
+  struct proc *curproc = myproc();
+  int curProcPID = curproc->pid;
+
+  int counterChildern = 0;
+
+  acquire(&ptable.lock);
+  struct proc *p;
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++)
+      if(p->parent->pid == curProcPID)
+      {
+        *(childrenPIDAddress + counterChildern) = p->pid;
+        counterChildern++;
+      }
+
+  release(&ptable.lock);
+  return counterChildern;
+>>>>>>> d8645278e86fcce381dc7541c926f77531af4bcd
 }
