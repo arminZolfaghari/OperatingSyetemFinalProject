@@ -100,7 +100,16 @@ int sys_getParentID(void)
   return getParentID();
 }
 
-<<<<<<< HEAD
+int sys_getChildren(void)
+{
+  int* childrenPIDAddress;
+  if(argptr(0, (void *) &childrenPIDAddress, sizeof(*childrenPIDAddress)) == -1)
+    return -1;
+  else{
+    return getChildren(childrenPIDAddress);
+  }
+}
+
 
 // extern int syscallNums;
 // extern int (*syscalls[26])(void);
@@ -117,14 +126,4 @@ int sys_getSyscallCounter(void)
     return -1;
   }
   return getSyscallCounter(systemcallNumber);
-=======
-int sys_getChildren(void)
-{
-  int* childrenPIDAddress;
-  if(argptr(0, (void *) &childrenPIDAddress, sizeof(*childrenPIDAddress)) == -1)
-    return -1;
-  else{
-    return getChildren(childrenPIDAddress);
-  }
->>>>>>> d8645278e86fcce381dc7541c926f77531af4bcd
 }

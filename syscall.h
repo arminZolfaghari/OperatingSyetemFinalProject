@@ -22,11 +22,5 @@
 #define SYS_close  21
 #define SYS_testGetYear 22
 #define SYS_getParentID 23
-<<<<<<< HEAD
-#define SYS_getSyscallCounter 25
-
-
-// #define syscallNums 25
-=======
 #define SYS_getChildren 24
->>>>>>> d8645278e86fcce381dc7541c926f77531af4bcd
+#define SYS_getSyscallCounter 25
