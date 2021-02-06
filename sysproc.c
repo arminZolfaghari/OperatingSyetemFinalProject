@@ -127,3 +127,16 @@ int sys_getSyscallCounter(void)
   }
   return getSyscallCounter(systemcallNumber);
 }
+
+
+int sys_setQuantum(void)
+{
+  int inputQuantom;
+
+  if(argint(0, &inputQuantom) < 0) {
+    return -1;
+  }
+  setQuantum(inputQuantom);
+  return 0;
+
+}

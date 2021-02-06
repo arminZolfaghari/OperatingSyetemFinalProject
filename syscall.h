@@ -24,3 +24,4 @@
 #define SYS_getParentID 23
 #define SYS_getChildren 24
 #define SYS_getSyscallCounter 25
+#define SYS_setQuantum 26

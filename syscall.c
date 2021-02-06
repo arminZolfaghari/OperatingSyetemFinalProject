@@ -107,6 +107,8 @@ extern int sys_testGetYear(void);
 extern int sys_getParentID(void);
 extern int sys_getSyscallCounter(void);
 extern int sys_getChildren(void);
+extern int sys_setQuantum(void);
+
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -134,9 +136,9 @@ static int (*syscalls[])(void) = {
 [SYS_getParentID] sys_getParentID,
 [SYS_getSyscallCounter] sys_getSyscallCounter,
 [SYS_getChildren] sys_getChildren,
+[SYS_setQuantum] sys_setQuantum,
 };
 
-int systemcallNos = NELEM(syscalls);
 
 void
 syscall(void)

@@ -577,3 +577,9 @@ int getSyscallCounter(int systemcallNumber)
   int syscallCounter = curproc->syscallCounter[systemcallNumber];
   return syscallCounter;
 }
+
+void setQuantum(int inputQuantum)
+{
+  // set quantum amount
+  QUANTUM = inputQuantum;
+}

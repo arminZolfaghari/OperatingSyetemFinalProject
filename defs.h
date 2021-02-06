@@ -124,6 +124,8 @@ int             testGetYear(void);
 int             getParentID(void);
 int             getSyscallCounter(int);
 int             getChildren(int* childrenPIDAddress);
+void            setQuantum(int);
+
 
 // swtch.S
 void            swtch(struct context**, struct context*);
