@@ -27,6 +27,7 @@ int testGetYear(void);
 int getParentID(void);
 int getSyscallCounter(int);
 int getChildren(int* childrenPIDAddress);
+int setQuantum(int);
 
 // ulib.c
 int stat(const char*, struct stat*);

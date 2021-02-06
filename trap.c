@@ -100,8 +100,9 @@ trap(struct trapframe *tf)
   if(myproc() && myproc()->killed && (tf->cs&3) == DPL_USER)
     exit();
 
+  // extern int quantum;  // time quantum for RR scheduler
 
-  int timeQuantum = QUANTUM;
+  int timeQuantum = quantum;
   // Force process to give up CPU on clock tick.
   // If interrupts were on while locks held, would need to check nlock.
   if(myproc() && myproc()->state == RUNNING &&
@@ -109,7 +110,7 @@ trap(struct trapframe *tf)
        timeQuantum--;
        if (timeQuantum <= 0)
        {
-         timeQuantum = QUANTUM;
+         timeQuantum = quantum;
          yield();
        }
      }

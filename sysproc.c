@@ -138,5 +138,4 @@ int sys_setQuantum(void)
   }
   setQuantum(inputQuantom);
   return 0;
-
 }

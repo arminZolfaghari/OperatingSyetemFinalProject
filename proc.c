@@ -7,6 +7,8 @@
 #include "proc.h"
 #include "spinlock.h"
 
+int quantum = RRQUANTUM;
+
 struct {
   struct spinlock lock;
   struct proc proc[NPROC];
@@ -581,5 +583,5 @@ int getSyscallCounter(int systemcallNumber)
 void setQuantum(int inputQuantum)
 {
   // set quantum amount
-  QUANTUM = inputQuantum;
+  quantum = inputQuantum;
 }
