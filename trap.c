@@ -102,17 +102,20 @@ trap(struct trapframe *tf)
 
   // extern int quantum;  // time quantum for RR scheduler
 
-  int timeQuantum = quantum;
+  // int timeQuantum = quantum;
+
   // Force process to give up CPU on clock tick.
   // If interrupts were on while locks held, would need to check nlock.
   if(myproc() && myproc()->state == RUNNING &&
      tf->trapno == T_IRQ0+IRQ_TIMER) {
-       timeQuantum--;
-       if (timeQuantum <= 0)
-       {
-         timeQuantum = quantum;
-         yield();
-       }
+      // for RR algorithm
+      //  timeQuantum--;
+      //  if (timeQuantum <= 0)
+      //  {
+      //    timeQuantum = quantum;
+      //    yield();
+      //  }
+      yield();
      }
 
   // Check if the process has been killed since we yielded
