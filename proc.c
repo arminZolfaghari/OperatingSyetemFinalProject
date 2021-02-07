@@ -114,6 +114,12 @@ found:
   memset(p->context, 0, sizeof *p->context);
   p->context->eip = (uint)forkret;
 
+  // times initializations:
+  p->creationTime = ticks;
+  p->terminationTime = 0;
+  p->runningTime = 0;
+  p->sleepingTime = 0;
+
   return p;
 }
 
@@ -265,6 +271,9 @@ exit(void)
 
   // Jump into the scheduler, never to return.
   curproc->state = ZOMBIE;
+  // Saving termination time;
+  curproc->terminationTime = ticks;
+
   sched();
   panic("zombie exit");
 }

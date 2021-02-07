@@ -53,6 +53,20 @@ trap(struct trapframe *tf)
       ticks++;
       wakeup(&ticks);
       release(&tickslock);
+
+      // Updating running time & sleeping time of process:
+      if (myproc())
+      {
+        if (myproc()->state == RUNNING)
+        {
+          myproc()->runningTime++;
+        } else if (myproc()->state == SLEEPING)
+        {
+          myproc()->sleepingTime++;
+        }
+        
+      }
+      
     }
     lapiceoi();
     break;
@@ -100,7 +114,6 @@ trap(struct trapframe *tf)
   if(myproc() && myproc()->killed && (tf->cs&3) == DPL_USER)
     exit();
 
-  // extern int quantum;  // time quantum for RR scheduler
 
   int timeQuantum = quantum;
   // Force process to give up CPU on clock tick.
