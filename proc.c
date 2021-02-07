@@ -306,6 +306,14 @@ wait(void)
         p->name[0] = 0;
         p->killed = 0;
         p->state = UNUSED;
+
+        // doroste:?
+        p->creationTime = 0;
+        p->terminationTime = 0;
+        p->runningTime = 0;
+        p->readyTime = 0;
+        p->sleepingTime = 0;
+
         release(&ptable.lock);
         return pid;
       }
@@ -593,4 +601,30 @@ void setQuantum(int inputQuantum)
 {
   // set quantum amount
   quantum = inputQuantum;
+}
+
+void updateTimes(void) { 
+
+  struct proc *p;
+  acquire(&ptable.lock);
+
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+    if (p)
+    {
+      if (p->state == RUNNING)
+        {
+          p->runningTime++;
+
+        } else if (p->state == RUNNABLE)
+        {
+          p->readyTime++;
+
+        } else if (p->state == SLEEPING)
+        {
+          p->sleepingTime++;
+        }
+    }
+  }
+
+  release(&ptable.lock);
 }

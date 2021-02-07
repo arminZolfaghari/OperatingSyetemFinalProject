@@ -51,22 +51,12 @@ trap(struct trapframe *tf)
     if(cpuid() == 0){
       acquire(&tickslock);
       ticks++;
+
+      // Updating running time & ready time & sleeping time of process:
+      updateTimes();
+      
       wakeup(&ticks);
       release(&tickslock);
-
-      // Updating running time & sleeping time of process:
-      if (myproc())
-      {
-        if (myproc()->state == RUNNING)
-        {
-          myproc()->runningTime++;
-        } else if (myproc()->state == SLEEPING)
-        {
-          myproc()->sleepingTime++;
-        }
-        
-      }
-      
     }
     lapiceoi();
     break;

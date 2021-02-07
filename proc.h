@@ -53,6 +53,7 @@ struct proc {
   int creationTime;            // time of process creation
   int terminationTime;         // time of process termination
   int runningTime;             // time amount of process in running state
+  int readyTime;               // time amount of process in ready state
   int sleepingTime;            // time amount of process in sleeping state
 };
 
