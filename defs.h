@@ -125,6 +125,7 @@ int             getParentID(void);
 int             getSyscallCounter(int);
 int             getChildren(int* childrenPIDAddress);
 void            setQuantum(int);
+int             setPriority(int);
 
 
 // swtch.S

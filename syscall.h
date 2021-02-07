@@ -25,3 +25,4 @@
 #define SYS_getChildren 24
 #define SYS_getSyscallCounter 25
 #define SYS_setQuantum 26
+#define SYS_setPriority 27

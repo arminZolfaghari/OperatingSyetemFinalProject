@@ -90,6 +90,7 @@ allocproc(void)
 found:
   p->state = EMBRYO;
   p->pid = nextpid++;
+  p->priority = 3;      //default priority of a process is 3
 
   release(&ptable.lock);
 
@@ -584,4 +585,17 @@ void setQuantum(int inputQuantum)
 {
   // set quantum amount
   quantum = inputQuantum;
+}
+
+
+int setPriority(int newPriority)
+{
+  if (newPriority < 1 && newPriority > 6)
+  {
+    newPriority = 5;
+  }
+
+  struct proc *curproc = myproc();
+  curproc->priority = newPriority;
+  return newPriority;
 }

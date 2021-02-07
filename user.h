@@ -28,6 +28,7 @@ int getParentID(void);
 int getSyscallCounter(int);
 int getChildren(int* childrenPIDAddress);
 int setQuantum(int);
+int setPriority(int);
 
 // ulib.c
 int stat(const char*, struct stat*);

@@ -139,3 +139,15 @@ int sys_setQuantum(void)
   setQuantum(inputQuantom);
   return 0;
 }
+
+
+int sys_setPriority(void)
+{
+  int newPriority;
+  if (argint(0, &newPriority) < 0){}
+  {
+    return -1;
+  }
+  setPriority(newPriority);
+  return 0;
+}
