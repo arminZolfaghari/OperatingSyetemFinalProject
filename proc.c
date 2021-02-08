@@ -10,7 +10,7 @@
 int quantum = RRQUANTUM;
 
 //schedule type : 0 -> default,  1->round robin,  2->priority queue
-int scheduleType;
+int scheduleType = 0;
 
 //round robin type: 0 -> default round robin in XV6,   1->round robin with quantum time
 int rrType = 0;
@@ -418,7 +418,6 @@ scheduler(void)
   // c->proc = 0;
 
   //default schedule type in xv6 (0)
-  scheduleType = 0;
   
   for(;;){
     // Enable interrupts on this processor.
