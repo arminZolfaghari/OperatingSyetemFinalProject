@@ -129,6 +129,10 @@ int             setPriority(int);
 int             changePolicy(int);
 void            updateTimes(void);
 
+int             getCBT(int);
+int             getTurnAroundTime(int);
+int             getWaitingTime(int);
+
 
 // swtch.S
 void            swtch(struct context**, struct context*);

@@ -27,3 +27,6 @@
 #define SYS_setQuantum 26
 #define SYS_setPriority 27
 #define SYS_changePolicy 28
+#define SYS_getCBT 29
+#define SYS_getTurnAroundTime 30
+#define SYS_getWaitingTime 31

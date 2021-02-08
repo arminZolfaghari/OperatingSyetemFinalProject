@@ -722,3 +722,19 @@ int changePolicy(int newScheduleType)
   scheduleType = newScheduleType;
   return scheduleType;
 }
+
+int getCBT(int pid)
+{
+  return (&ptable.proc[pid])->runningTime;
+}
+
+int getTurnAroundTime(int pid)
+{
+  // return (&ptable.proc[pid])->sleepingTime + (&ptable.proc[pid])->readyTime + (&ptable.proc[pid])->runningTime;
+  return (&ptable.proc[pid])->terminationTime - (&ptable.proc[pid])->creationTime;
+}
+
+int getWaitingTime(int pid)
+{
+  return (&ptable.proc[pid])->sleepingTime + (&ptable.proc[pid])->readyTime;
+}
