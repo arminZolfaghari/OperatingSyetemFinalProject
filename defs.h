@@ -125,6 +125,8 @@ int             getParentID(void);
 int             getSyscallCounter(int);
 int             getChildren(int* childrenPIDAddress);
 void            setQuantum(int);
+int             setPriority(int);
+int             changePolicy(int);
 
 
 // swtch.S
@@ -197,3 +199,5 @@ void            clearpteu(pde_t *pgdir, char *uva);
 
 extern int quantum;
 void updateTimes(void);
+//round robin type
+extern int rrType;

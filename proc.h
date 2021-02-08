@@ -55,6 +55,7 @@ struct proc {
   int runningTime;             // time amount of process in running state
   int readyTime;               // time amount of process in ready state
   int sleepingTime;            // time amount of process in sleeping state
+  int priority;                 // priority process 
 };
 
 // Process memory is laid out contiguously, low addresses first:

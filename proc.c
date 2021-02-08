@@ -9,6 +9,12 @@
 
 int quantum = RRQUANTUM;
 
+//schedule type : 0 -> default,  1->round robin,  2->priority queue
+int scheduleType;
+
+//round robin type: 0 -> default round robin in XV6,   1->round robin with quantum time
+int rrType = 0;
+
 struct {
   struct spinlock lock;
   struct proc proc[NPROC];
@@ -90,6 +96,7 @@ allocproc(void)
 found:
   p->state = EMBRYO;
   p->pid = nextpid++;
+  p->priority = 3;      //default priority of a process is 3
 
   release(&ptable.lock);
 
@@ -330,26 +337,49 @@ wait(void)
   }
 }
 
-//PAGEBREAK: 42
-// Per-CPU process scheduler.
-// Each CPU calls scheduler() after setting itself up.
-// Scheduler never returns.  It loops, doing:
-//  - choose a process to run
-//  - swtch to start running that process
-//  - eventually that process transfers control
-//      via swtch back to the scheduler.
-void
-scheduler(void)
+
+
+void priorityScheduler(struct cpu *c)
 {
   struct proc *p;
-  struct cpu *c = mycpu();
+  struct proc *p1;
   c->proc = 0;
-  
-  for(;;){
-    // Enable interrupts on this processor.
-    sti();
+  struct proc *highPriorityP = 0;
+  acquire(&ptable.lock);
+  for (p = ptable.proc; p < &ptable.proc[NPROC]; p++)
+  {
+    if (p->state != RUNNABLE)
+        continue;
+    
+    highPriorityP = p;
+    //chose one with highest priority
+    for (p1 = ptable.proc; p1 < &ptable.proc[NPROC]; p1++)
+    {
+      if (p1->state != RUNNABLE)
+          continue;
+      if (highPriorityP->priority > p1->priority)
+          highPriorityP = p1;
+    }
+    p = highPriorityP;
+    c->proc = p;
+    switchuvm(p);
+    p->state = RUNNING;
 
-    // Loop over process table looking for process to run.
+    swtch(&(c->scheduler), p->context);
+    switchkvm();
+    c->proc = 0;
+  }
+  release(&ptable.lock);
+}
+
+
+
+void roundRobinScheduler(struct cpu *c)
+{
+    struct proc *p;
+    c->proc = 0;
+
+  // Loop over process table looking for process to run.
     acquire(&ptable.lock);
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
       if(p->state != RUNNABLE)
@@ -370,9 +400,50 @@ scheduler(void)
       c->proc = 0;
     }
     release(&ptable.lock);
+}
 
+//PAGEBREAK: 42
+// Per-CPU process scheduler.
+// Each CPU calls scheduler() after setting itself up.
+// Scheduler never returns.  It loops, doing:
+//  - choose a process to run
+//  - swtch to start running that process
+//  - eventually that process transfers control
+//      via swtch back to the scheduler.
+void
+scheduler(void)
+{
+  // struct proc *p;
+  struct cpu *c = mycpu();
+  // c->proc = 0;
+
+  //default schedule type in xv6 (0)
+  scheduleType = 0;
+  
+  for(;;){
+    // Enable interrupts on this processor.
+    sti();
+
+
+    if (scheduleType == 2)
+    {
+      priorityScheduler(c);
+      // rrType = 0;
+    }
+
+    else if (scheduleType == 1)
+    {
+      roundRobinScheduler(c);
+      rrType = 1;
+    }
+    else{
+      roundRobinScheduler(c);
+      rrType = 0;
+    }
   }
 }
+
+
 
 // Enter scheduler.  Must hold only ptable.lock
 // and have changed proc->state. Saves and restores
@@ -627,4 +698,23 @@ void updateTimes(void) {
   }
 
   release(&ptable.lock);
+}
+
+int setPriority(int newPriority)
+{
+  if (newPriority < 1 && newPriority > 6)
+  {
+    newPriority = 5;
+  }
+
+  struct proc *curproc = myproc();
+  curproc->priority = newPriority;
+  return newPriority;
+}
+
+
+int changePolicy(int newScheduleType)
+{
+  scheduleType = newScheduleType;
+  return scheduleType;
 }

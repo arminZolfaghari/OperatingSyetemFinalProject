@@ -139,3 +139,25 @@ int sys_setQuantum(void)
   setQuantum(inputQuantom);
   return 0;
 }
+
+
+int sys_setPriority(void)
+{
+  int newPriority;
+  if (argint(0, &newPriority) < 0){}
+  {
+    return -1;
+  }
+  return setPriority(newPriority);
+}
+
+
+int sys_changePolicy(void)
+{
+  int newPolicy;
+  if (argint(0, &newPolicy) < 0){}
+  {
+    return -1;
+  }
+  return changePolicy(newPolicy);
+}
