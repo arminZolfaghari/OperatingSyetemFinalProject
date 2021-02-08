@@ -127,6 +127,8 @@ found:
   p->runningTime = 0;
   p->sleepingTime = 0;
 
+  p->timeQuantum = quantum;
+
   return p;
 }
 
@@ -320,6 +322,8 @@ wait(void)
         p->runningTime = 0;
         p->readyTime = 0;
         p->sleepingTime = 0;
+
+        // p->timeQuantum = 0;
 
         release(&ptable.lock);
         return pid;
@@ -680,8 +684,8 @@ void updateTimes(void) {
   acquire(&ptable.lock);
 
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
-    if (p)
-    {
+    // if (p)
+    // {
       if (p->state == RUNNING)
         {
           p->runningTime++;
@@ -694,7 +698,7 @@ void updateTimes(void) {
         {
           p->sleepingTime++;
         }
-    }
+    // }
   }
 
   release(&ptable.lock);

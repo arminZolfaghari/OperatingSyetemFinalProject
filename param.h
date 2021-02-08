@@ -10,6 +10,7 @@
 #define MAXOPBLOCKS  10  // max # of blocks any FS op writes
 #define LOGSIZE      (MAXOPBLOCKS*3)  // max data blocks in on-disk log
 #define NBUF         (MAXOPBLOCKS*3)  // size of disk block cache
-#define FSSIZE       1000  // size of file system in blocks
+#define FSSIZE       1000 // size of file system in blocks
 
-#define RRQUANTUM      10  // time quantum for RR scheduler
+#define SYSCALLNUMS  26  // number of system calls
+#define RRQUANTUM    10  // time quantum for RR scheduler
