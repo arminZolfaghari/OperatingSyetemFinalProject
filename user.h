@@ -36,6 +36,7 @@ int getWaitingTime(int);
 int getTotalCBT(int);
 int getTotaltat(int);
 int getTotalwt(int);
+int waitForPrioritySchedule(int *CWTPTimes);
 
 // ulib.c
 int stat(const char*, struct stat*);

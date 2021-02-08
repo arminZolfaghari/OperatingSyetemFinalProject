@@ -33,3 +33,4 @@
 #define SYS_getTotalCBT 32
 #define SYS_getTotaltat 33
 #define SYS_getTotalwt 34
+#define SYS_waitForPrioritySchedule 35

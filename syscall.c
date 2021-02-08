@@ -116,6 +116,7 @@ extern int sys_getWaitingTime(void);
 extern int sys_getTotalCBT(void);
 extern int sys_getTotaltat(void);
 extern int sys_getTotalwt(void);
+extern int sys_waitForPrioritySchedule(void);
 
 
 
@@ -154,6 +155,7 @@ static int (*syscalls[])(void) = {
 [SYS_getTotalCBT] sys_getTotalCBT,
 [SYS_getTotaltat] sys_getTotaltat,
 [SYS_getTotalwt] sys_getTotalwt,
+[SYS_waitForPrioritySchedule] sys_waitForPrioritySchedule,
 };
 
 
