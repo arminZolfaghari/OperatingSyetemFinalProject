@@ -192,3 +192,14 @@ int sys_getWaitingTime(void)
   }
   return getWaitingTime(pid);
 }
+
+
+int sys_waitForPrioritySchedule(void)
+{
+  int *CWTPTimes;
+  if (argptr(0, (void *)&CWTPTimes, sizeof(*CWTPTimes) < 0))
+    return -1;
+  
+  return waitForPrioritySchedule(CWTPTimes);
+  
+}

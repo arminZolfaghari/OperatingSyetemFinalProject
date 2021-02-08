@@ -133,6 +133,8 @@ int             getCBT(int);
 int             getTurnAroundTime(int);
 int             getWaitingTime(int);
 
+int             waitForPrioritySchedule(int *CWTPTimes);
+
 
 // swtch.S
 void            swtch(struct context**, struct context*);

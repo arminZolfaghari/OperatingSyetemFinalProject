@@ -6,7 +6,12 @@
 int main()
 {
     int originalParentID = getpid();
-    int childNumber;
+    int childNumber = 0;
+
+    int CBTs[30] = {0};
+    int waitingTimes[30] = {0};
+    int turnAroundTimes[30] = {0};
+    int priorities[30] = {0};
 
     int policy = changePolicy(2);    //scheduleType 2 is priority scheduler
     printf(1, "*** policy %d(prioritySchedule) ***\n", policy);
@@ -36,16 +41,36 @@ int main()
         } 
     }
 
-    //this loop for children process
-    if (originalParentID != getpid())
-    {
-        int childPID = getpid();
-        for (int i = 0; i < 250; i++)
-            printf(1, "/childNumber: %d, PID: %d/ : /%d/ \n", childNumber, childPID, i);
+    
+    if (originalParentID == getpid())
+    {   //CWTPtimes is array: [0]: CBT, [1]: waitingTimes, [2]: turnAroundTimes
+        //[3]: priority, [4]: process pid
+        int *CWTPTimes = malloc(5 * sizeof(int));
+        childNumber = 0;
+        while (waitForPrioritySchedule(CWTPTimes) > 0)
+        {
+            CBTs[childNumber] = CWTPTimes[0];
+            waitingTimes[childNumber] = CWTPTimes[1];
+            turnAroundTimes[childNumber] = CWTPTimes[2];
+            priorities[childNumber] = CWTPTimes[3];
+            // int pid = CWTPTimes[4];
+            
+            childNumber++;
+        }
 
-        int turnAroundTime =    
+        for (int i = 0; i < 30; i++)
+        {
+            printf(1,"*** childProcess PID: %d, CBT: %d, waiting time: %d,turn around time: %d, priority: %d ***\n",getpid() ,CBTs[i], waitingTimes[i],turnAroundTimes[i], priorities[i]);
+        }
         
-
+        
+    
+    }
+    //children go to else
+    else{
+        int childPID = getpid();
+        for (int i = 0; i < 10; i++)
+            printf(1, "/childNumber: %d, PID: %d/ : /%d/ \n", childNumber, childPID, i);
     }
     
     

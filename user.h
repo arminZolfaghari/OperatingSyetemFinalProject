@@ -30,6 +30,7 @@ int getChildren(int* childrenPIDAddress);
 int setQuantum(int);
 int setPriority(int);
 int changePolicy(int);
+int waitForPrioritySchedule(int *CWTPTimes);
 
 // ulib.c
 int stat(const char*, struct stat*);
