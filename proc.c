@@ -386,6 +386,41 @@ void priorityScheduler(struct cpu *c)
 
 
 
+void RevPriorityScheduler(struct cpu *c)
+{
+  struct proc *p;
+  struct proc *p1;
+  c->proc = 0;
+  struct proc *highPriorityP = 0;
+  acquire(&ptable.lock);
+  for (p = ptable.proc; p < &ptable.proc[NPROC]; p++)
+  {
+    if (p->state != RUNNABLE)
+        continue;
+    
+    highPriorityP = p;
+    //chose one with highest priority
+    for (p1 = ptable.proc; p1 < &ptable.proc[NPROC]; p1++)
+    {
+      if (p1->state != RUNNABLE)
+          continue;
+      if (highPriorityP->priority < p1->priority)
+          highPriorityP = p1;
+    }
+    p = highPriorityP;
+    c->proc = p;
+    switchuvm(p);
+    p->state = RUNNING;
+
+    swtch(&(c->scheduler), p->context);
+    switchkvm();
+    c->proc = 0;
+  }
+  release(&ptable.lock);
+}
+
+
+
 void roundRobinScheduler(struct cpu *c)
 {
     struct proc *p;
@@ -414,6 +449,127 @@ void roundRobinScheduler(struct cpu *c)
     release(&ptable.lock);
 }
 
+
+void multiLayerdScheduler(struct cpu *c)
+{
+
+//default:
+struct proc *p;
+    c->proc = 0;
+
+  // Loop over process table looking for process to run.
+    acquire(&ptable.lock);
+    rrType = 0;
+    for(p = ptable.proc; p < &ptable.proc[NPROC/4]; p++){
+      if(p->state != RUNNABLE)
+        continue;
+
+      // Switch to chosen process.  It is the process's job
+      // to release ptable.lock and then reacquire it
+      // before jumping back to us.
+      c->proc = p;
+      switchuvm(p);
+      p->state = RUNNING;
+
+      swtch(&(c->scheduler), p->context);
+      switchkvm();
+
+      // Process is done running for now.
+      // It should have changed its p->state before coming back.
+      c->proc = 0;
+    }
+
+//rr:
+// struct proc *p;
+    c->proc = 0;
+
+  // Loop over process table looking for process to run.
+    // acquire(&ptable.lock);
+    rrType = 1;
+    for(p = &ptable.proc[NPROC/4]; p < &ptable.proc[NPROC/2]; p++){
+      if(p->state != RUNNABLE)
+        continue;
+
+      // Switch to chosen process.  It is the process's job
+      // to release ptable.lock and then reacquire it
+      // before jumping back to us.
+      c->proc = p;
+      switchuvm(p);
+      p->state = RUNNING;
+
+      swtch(&(c->scheduler), p->context);
+      switchkvm();
+
+      // Process is done running for now.
+      // It should have changed its p->state before coming back.
+      c->proc = 0;
+    }
+
+
+//prio:
+  // struct proc *p;
+  struct proc *p1;
+  c->proc = 0;
+  struct proc *highPriorityP = 0;
+  // acquire(&ptable.lock);
+  for (p = &ptable.proc[NPROC/2]; p < &ptable.proc[3*NPROC/4]; p++)
+  {
+    if (p->state != RUNNABLE)
+        continue;
+    
+    highPriorityP = p;
+    //chose one with highest priority
+    for (p1 = &ptable.proc[NPROC/2]; p1 < &ptable.proc[3*NPROC/4]; p1++)
+    {
+      if (p1->state != RUNNABLE)
+          continue;
+      if (highPriorityP->priority > p1->priority)
+          highPriorityP = p1;
+    }
+    p = highPriorityP;
+    c->proc = p;
+    switchuvm(p);
+    p->state = RUNNING;
+
+    swtch(&(c->scheduler), p->context);
+    switchkvm();
+    c->proc = 0;
+  }
+
+//rev prio:
+  // struct proc *p;
+  // struct proc *p1;
+  // c->proc = 0;
+  struct proc *highPriorityPrev = 0;
+  // acquire(&ptable.lock);
+  for (p = &ptable.proc[3*NPROC/4]; p < &ptable.proc[NPROC]; p++)
+  {
+    if (p->state != RUNNABLE)
+        continue;
+    
+    highPriorityPrev = p;
+    //chose one with highest priority
+    for (p1 = &ptable.proc[3*NPROC/4]; p1 < &ptable.proc[NPROC]; p1++)
+    {
+      if (p1->state != RUNNABLE)
+          continue;
+      if (highPriorityPrev->priority < p1->priority)
+          highPriorityPrev = p1;
+    }
+    p = highPriorityPrev;
+    c->proc = p;
+    switchuvm(p);
+    p->state = RUNNING;
+
+    swtch(&(c->scheduler), p->context);
+    switchkvm();
+    c->proc = 0;
+  }
+  release(&ptable.lock);
+}
+
+
+
 //PAGEBREAK: 42
 // Per-CPU process scheduler.
 // Each CPU calls scheduler() after setting itself up.
@@ -435,8 +591,12 @@ scheduler(void)
     // Enable interrupts on this processor.
     sti();
 
+    if (scheduleType == 3)
+    {
+      multiLayerdScheduler(c);
+    }
 
-    if (scheduleType == 2)
+    else if (scheduleType == 2)
     {
       priorityScheduler(c);
       // rrType = 0;

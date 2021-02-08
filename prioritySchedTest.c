@@ -20,6 +20,7 @@ int main()
     {
         if (fork() == 0)    //child process
         {
+            wait();
             childNumber = i + 1;
             int priority;
             if (i < 5)
@@ -43,7 +44,8 @@ int main()
 
     
     if (originalParentID == getpid())
-    {   //CWTPtimes is array: [0]: CBT, [1]: waitingTimes, [2]: turnAroundTimes
+    {   wait();
+        //CWTPtimes is array: [0]: CBT, [1]: waitingTimes, [2]: turnAroundTimes
         //[3]: priority, [4]: process pid
         int *CWTPTimes = malloc(5 * sizeof(int));
         childNumber = 0;
@@ -60,6 +62,7 @@ int main()
 
         for (int i = 0; i < 30; i++)
         {
+            wait();
             printf(1,"*** childProcess PID: %d, CBT: %d, waiting time: %d,turn around time: %d, priority: %d ***\n",getpid() ,CBTs[i], waitingTimes[i],turnAroundTimes[i], priorities[i]);
         }
         
@@ -69,8 +72,9 @@ int main()
     //children go to else
     else{
         int childPID = getpid();
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 10; i++){
             printf(1, "/childNumber: %d, PID: %d/ : /%d/ \n", childNumber, childPID, i);
+        }
     }
     
     

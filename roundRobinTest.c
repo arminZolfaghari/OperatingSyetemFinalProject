@@ -6,17 +6,17 @@ int main()
 {
     printf(1, "/%d/\n\n", changePolicy(1));
 
-    int main_pid = getpid();
+    int father = getpid();
     for (int i = 0; i < 10; i++)
     {
         if (fork() > 0)
             break;
     }
 
-    if (main_pid != getpid())
+    if (father != getpid())
     {
         wait();
-        for (int i = 0; i < 100; i++){
+        for (int i = 0; i < 200; i++){
             printf(1, "/%d/: %d\n", getpid(), i);
             wait();
         }
