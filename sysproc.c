@@ -155,9 +155,40 @@ int sys_setPriority(void)
 int sys_changePolicy(void)
 {
   int newPolicy;
-  if (argint(0, &newPolicy) < 0){}
+  if (argint(0, &newPolicy) < 0)//{}
   {
     return -1;
   }
   return changePolicy(newPolicy);
+}
+
+int sys_getCBT(void)
+{
+  int pid;
+
+  if (argint(0, &pid) < 0)
+  {
+    return -1;
+  }
+  return getCBT(pid);
+}
+
+int sys_getTurnAroundTime(void)
+{
+  int pid;
+  if (argint(0, &pid) < 0)
+  {
+    return -1;
+  }
+  return getTurnAroundTime(pid);
+}
+
+int sys_getWaitingTime(void)
+{
+  int pid;
+  if (argint(0, &pid) < 0)
+  {
+    return -1;
+  }
+  return getWaitingTime(pid);
 }

@@ -49,13 +49,14 @@ struct proc {
   struct file *ofile[NOFILE];  // Open files
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
-  int syscallCounter[26];      // Array for counting called system calls
+  int syscallCounter[SYSCALLNUMS];      // Array for counting called system calls
   int creationTime;            // time of process creation
   int terminationTime;         // time of process termination
   int runningTime;             // time amount of process in running state
   int readyTime;               // time amount of process in ready state
   int sleepingTime;            // time amount of process in sleeping state
-  int priority;                 // priority process 
+  int priority;                // priority process 
+  int timeQuantum;             // time quantum for rr scheduling
 };
 
 // Process memory is laid out contiguously, low addresses first:

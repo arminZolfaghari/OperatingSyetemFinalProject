@@ -110,6 +110,10 @@ extern int sys_getChildren(void);
 extern int sys_setQuantum(void);
 extern int sys_setPriority(void);
 extern int sys_changePolicy(void);
+extern int sys_getCBT(void);
+extern int sys_getTurnAroundTime(void);
+extern int sys_getWaitingTime(void);
+
 
 
 static int (*syscalls[])(void) = {
@@ -141,6 +145,9 @@ static int (*syscalls[])(void) = {
 [SYS_setQuantum] sys_setQuantum,
 [SYS_setPriority] sys_setPriority,
 [SYS_changePolicy] sys_changePolicy,
+[SYS_getCBT] sys_getCBT,
+[SYS_getTurnAroundTime] sys_getTurnAroundTime,
+[SYS_getWaitingTime] sys_getWaitingTime,
 };
 
 

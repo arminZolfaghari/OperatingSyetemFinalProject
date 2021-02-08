@@ -107,7 +107,7 @@ trap(struct trapframe *tf)
     exit();
 
 
-  int timeQuantum = quantum;
+  // int timeQuantum = quantum;
 
   // Force process to give up CPU on clock tick.
   // If interrupts were on while locks held, would need to check nlock.
@@ -118,13 +118,16 @@ trap(struct trapframe *tf)
          yield();
 
        // for RR algorithm
-       else{
-        timeQuantum--;
-        if (timeQuantum <= 0)
+       else {
+
+        // timeQuantum--;
+        myproc()->timeQuantum--;
+        if (myproc()->timeQuantum <= 0)
         {
-           timeQuantum = quantum;
+           myproc()->timeQuantum = quantum;
            yield();
         }
+
        }
      }
 

@@ -127,6 +127,11 @@ int             getChildren(int* childrenPIDAddress);
 void            setQuantum(int);
 int             setPriority(int);
 int             changePolicy(int);
+void            updateTimes(void);
+
+int             getCBT(int);
+int             getTurnAroundTime(int);
+int             getWaitingTime(int);
 
 
 // swtch.S
@@ -198,6 +203,5 @@ void            clearpteu(pde_t *pgdir, char *uva);
 #define NELEM(x) (sizeof(x)/sizeof((x)[0]))
 
 extern int quantum;
-void updateTimes(void);
 //round robin type
 extern int rrType;
