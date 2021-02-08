@@ -713,7 +713,7 @@ void updateTimes(void) {
 
 int setPriority(int newPriority)
 {
-  if (newPriority < 1 && newPriority > 6)
+  if (newPriority < 1 || newPriority > 6)
   {
     newPriority = 5;
   }
