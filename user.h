@@ -30,6 +30,12 @@ int getChildren(int* childrenPIDAddress);
 int setQuantum(int);
 int setPriority(int);
 int changePolicy(int);
+int getCBT(int);
+int getTurnAroundTime(int);
+int getWaitingTime(int);
+int getTotalCBT(int);
+int getTotaltat(int);
+int getTotalwt(int);
 
 // ulib.c
 int stat(const char*, struct stat*);

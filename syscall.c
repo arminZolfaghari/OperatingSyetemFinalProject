@@ -113,6 +113,9 @@ extern int sys_changePolicy(void);
 extern int sys_getCBT(void);
 extern int sys_getTurnAroundTime(void);
 extern int sys_getWaitingTime(void);
+extern int sys_getTotalCBT(void);
+extern int sys_getTotaltat(void);
+extern int sys_getTotalwt(void);
 
 
 
@@ -148,6 +151,9 @@ static int (*syscalls[])(void) = {
 [SYS_getCBT] sys_getCBT,
 [SYS_getTurnAroundTime] sys_getTurnAroundTime,
 [SYS_getWaitingTime] sys_getWaitingTime,
+[SYS_getTotalCBT] sys_getTotalCBT,
+[SYS_getTotaltat] sys_getTotaltat,
+[SYS_getTotalwt] sys_getTotalwt,
 };
 
 

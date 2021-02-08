@@ -133,6 +133,10 @@ int             getCBT(int);
 int             getTurnAroundTime(int);
 int             getWaitingTime(int);
 
+int             getTotalCBT(int);
+int             getTotaltat(int);
+int             getTotalwt(int);
+
 
 // swtch.S
 void            swtch(struct context**, struct context*);

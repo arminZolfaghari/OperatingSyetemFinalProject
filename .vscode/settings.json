@@ -10,6 +10,7 @@
         "proc.h": "c",
         "mmu.h": "c",
         "limits": "c",
-        "memlayout.h": "c"
+        "memlayout.h": "c",
+        "user.h": "c"
     }
 }

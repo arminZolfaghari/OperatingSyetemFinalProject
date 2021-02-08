@@ -192,3 +192,33 @@ int sys_getWaitingTime(void)
   }
   return getWaitingTime(pid);
 }
+
+int sys_getTotalCBT(void){
+  int pid;
+
+  if (argint(0, &pid) < 0)
+  {
+    return -1;
+  }
+  return getTotalCBT(pid);
+}
+
+int sys_getTotaltat(void)
+{
+  int pid;
+  if (argint(0, &pid) < 0)
+  {
+    return -1;
+  }
+  return getTotaltat(pid);
+}
+
+int sys_getTotalwt(void)
+{
+  int pid;
+  if (argint(0, &pid) < 0)
+  {
+    return -1;
+  }
+  return getTotalwt(pid);
+}

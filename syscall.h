@@ -30,3 +30,6 @@
 #define SYS_getCBT 29
 #define SYS_getTurnAroundTime 30
 #define SYS_getWaitingTime 31
+#define SYS_getTotalCBT 32
+#define SYS_getTotaltat 33
+#define SYS_getTotalwt 34

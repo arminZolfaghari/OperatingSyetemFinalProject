@@ -9,8 +9,12 @@
 
 int quantum = RRQUANTUM;
 
+int tcbt = 0;
+int ttat = 0;
+int twt = 0;
+
 //schedule type : 0 -> default,  1->round robin,  2->priority queue
-int scheduleType;
+int scheduleType = 0;
 
 //round robin type: 0 -> default round robin in XV6,   1->round robin with quantum time
 int rrType = 0;
@@ -306,6 +310,10 @@ wait(void)
       havekids = 1;
       if(p->state == ZOMBIE){
         // Found one.
+        tcbt += p->runningTime;
+        ttat += p->sleepingTime + p->runningTime + p->readyTime;
+        twt  += p->sleepingTime + p->readyTime;
+
         pid = p->pid;
         kfree(p->kstack);
         p->kstack = 0;
@@ -422,7 +430,7 @@ scheduler(void)
   // c->proc = 0;
 
   //default schedule type in xv6 (0)
-  scheduleType = 0;
+  // scheduleType = 0;
   
   for(;;){
     // Enable interrupts on this processor.
@@ -725,16 +733,38 @@ int changePolicy(int newScheduleType)
 
 int getCBT(int pid)
 {
-  return (&ptable.proc[pid])->runningTime;
+  struct proc *p = myproc();
+  return p->runningTime;
+  // return (&ptable.proc[pid])->runningTime;
 }
 
 int getTurnAroundTime(int pid)
 {
+  struct proc *p = myproc();
+  return p->sleepingTime + p->readyTime + p->runningTime;
+
   // return (&ptable.proc[pid])->sleepingTime + (&ptable.proc[pid])->readyTime + (&ptable.proc[pid])->runningTime;
-  return (&ptable.proc[pid])->terminationTime - (&ptable.proc[pid])->creationTime;
+  // return (&ptable.proc[pid])->terminationTime - (&ptable.proc[pid])->creationTime;
 }
 
 int getWaitingTime(int pid)
 {
-  return (&ptable.proc[pid])->sleepingTime + (&ptable.proc[pid])->readyTime;
+  struct proc *p = myproc();
+  return p->sleepingTime + p->readyTime;
+  // return (&ptable.proc[pid])->sleepingTime + (&ptable.proc[pid])->readyTime;
+}
+
+int getTotalCBT(int pid)
+{
+  return tcbt;
+}
+
+int getTotaltat(int pid)
+{
+  return ttat;
+}
+
+int getTotalwt(int pid)
+{
+  return twt;
 }
