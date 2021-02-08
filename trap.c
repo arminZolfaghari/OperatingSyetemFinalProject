@@ -8,6 +8,8 @@
 #include "traps.h"
 #include "spinlock.h"
 
+
+
 // Interrupt descriptor table (shared by all CPUs).
 struct gatedesc idt[256];
 extern uint vectors[];  // in vectors.S: array of 256 entry pointers
@@ -100,22 +102,26 @@ trap(struct trapframe *tf)
   if(myproc() && myproc()->killed && (tf->cs&3) == DPL_USER)
     exit();
 
-  // extern int quantum;  // time quantum for RR scheduler
 
-  // int timeQuantum = quantum;
+  int timeQuantum = quantum;
 
   // Force process to give up CPU on clock tick.
   // If interrupts were on while locks held, would need to check nlock.
   if(myproc() && myproc()->state == RUNNING &&
      tf->trapno == T_IRQ0+IRQ_TIMER) {
-      // for RR algorithm
-      //  timeQuantum--;
-      //  if (timeQuantum <= 0)
-      //  {
-      //    timeQuantum = quantum;
-      //    yield();
-      //  }
-      yield();
+       //default RR algorithm in XV6(default)
+       if (rrType == 0)
+         yield();
+
+       // for RR algorithm
+       else{
+        timeQuantum--;
+        if (timeQuantum <= 0)
+        {
+           timeQuantum = quantum;
+           yield();
+        }
+       }
      }
 
   // Check if the process has been killed since we yielded

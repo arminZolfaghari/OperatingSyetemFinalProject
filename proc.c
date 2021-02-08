@@ -9,6 +9,12 @@
 
 int quantum = RRQUANTUM;
 
+//schedule type : 0 -> default,  1->round robin,  2->priority queue
+int scheduleType;
+
+//round robin type: 0 -> default round robin in XV6,   1->round robin with quantum time
+int rrType = 0;
+
 struct {
   struct spinlock lock;
   struct proc proc[NPROC];
@@ -349,6 +355,36 @@ void priorityScheduler(struct cpu *c)
   release(&ptable.lock);
 }
 
+
+
+void roundRobinScheduler(struct cpu *c)
+{
+    struct proc *p;
+    c->proc = 0;
+
+  // Loop over process table looking for process to run.
+    acquire(&ptable.lock);
+    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+      if(p->state != RUNNABLE)
+        continue;
+
+      // Switch to chosen process.  It is the process's job
+      // to release ptable.lock and then reacquire it
+      // before jumping back to us.
+      c->proc = p;
+      switchuvm(p);
+      p->state = RUNNING;
+
+      swtch(&(c->scheduler), p->context);
+      switchkvm();
+
+      // Process is done running for now.
+      // It should have changed its p->state before coming back.
+      c->proc = 0;
+    }
+    release(&ptable.lock);
+}
+
 //PAGEBREAK: 42
 // Per-CPU process scheduler.
 // Each CPU calls scheduler() after setting itself up.
@@ -364,40 +400,29 @@ scheduler(void)
   struct cpu *c = mycpu();
   // c->proc = 0;
 
-  int scheduleModel = 1;
+  //default schedule type in xv6 (0)
+  scheduleType = 0;
   
   for(;;){
     // Enable interrupts on this processor.
     sti();
 
-    if (scheduleModel == 1)
+
+    if (scheduleType == 2)
     {
       priorityScheduler(c);
+      // rrType = 0;
     }
-    
 
-    // // Loop over process table looking for process to run.
-    // acquire(&ptable.lock);
-    // for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-    //   if(p->state != RUNNABLE)
-    //     continue;
-
-    //   // Switch to chosen process.  It is the process's job
-    //   // to release ptable.lock and then reacquire it
-    //   // before jumping back to us.
-    //   c->proc = p;
-    //   switchuvm(p);
-    //   p->state = RUNNING;
-
-    //   swtch(&(c->scheduler), p->context);
-    //   switchkvm();
-
-    //   // Process is done running for now.
-    //   // It should have changed its p->state before coming back.
-    //   c->proc = 0;
-    // }
-    // release(&ptable.lock);
-
+    else if (scheduleType == 1)
+    {
+      roundRobinScheduler(c);
+      rrType = 1;
+    }
+    else{
+      roundRobinScheduler(c);
+      rrType = 0;
+    }
   }
 }
 
@@ -643,4 +668,11 @@ int setPriority(int newPriority)
   struct proc *curproc = myproc();
   curproc->priority = newPriority;
   return newPriority;
+}
+
+
+int changePolicy(int newScheduleType)
+{
+  scheduleType = newScheduleType;
+  return scheduleType;
 }

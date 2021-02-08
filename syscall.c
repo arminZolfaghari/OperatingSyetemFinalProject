@@ -109,6 +109,7 @@ extern int sys_getSyscallCounter(void);
 extern int sys_getChildren(void);
 extern int sys_setQuantum(void);
 extern int sys_setPriority(void);
+extern int sys_changePolicy(void);
 
 
 static int (*syscalls[])(void) = {
@@ -139,6 +140,7 @@ static int (*syscalls[])(void) = {
 [SYS_getChildren] sys_getChildren,
 [SYS_setQuantum] sys_setQuantum,
 [SYS_setPriority] sys_setPriority,
+[SYS_changePolicy] sys_changePolicy,
 };
 
 

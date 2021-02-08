@@ -26,3 +26,4 @@
 #define SYS_getSyscallCounter 25
 #define SYS_setQuantum 26
 #define SYS_setPriority 27
+#define SYS_changePolicy 28
