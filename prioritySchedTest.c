@@ -20,7 +20,7 @@ int main()
     {
         if (fork() == 0)    //child process
         {
-            wait();
+            // wait();
             childNumber = i + 1;
             int priority;
             if (i < 5)
@@ -44,7 +44,8 @@ int main()
 
     
     if (originalParentID == getpid())
-    {   wait();
+    {   
+        // wait();
         //CWTPtimes is array: [0]: CBT, [1]: waitingTimes, [2]: turnAroundTimes
         //[3]: priority, [4]: process pid
         int *CWTPTimes = malloc(5 * sizeof(int));
@@ -80,9 +81,8 @@ int main()
         
         for (int j = 1; j < 7; j++)
         {
-            printf(1, "priority: %d, AVG of CBTs: %f, AVG of turnAround times: %f",
-                 "AVG of waiting times: %f\n",
-                j, averageCBTsPerClass[j], averageTurnAroundTimesPerClass[j], averageWaitingTimesPerClass[j]);
+            printf(1, "priority: %d, AVG of CBTs: %d, AVG of turnAround times: %d , AVG of waiting times: %d\n",
+                j, (int)averageCBTsPerClass[j], (int)averageTurnAroundTimesPerClass[j], (int)averageWaitingTimesPerClass[j]);
         }
         
         printf(1, "\n\n\n ====> AVERAGE FOR ALL CHILDREN <====\n\n");
@@ -97,10 +97,9 @@ int main()
             AVGALLWaitingTimes += (float)averageWaitingTimesPerClass[i]/6;
             AVGAllTurnAroundTimes += (float)averageTurnAroundTimesPerClass[i]/6;
         }
-        printf(1,"*******************************************************************");
+        printf(1,"*******************************************************************\n");
 
-        printf(1, "AVG ALL CBTS : %f, AVG ALL TURN AROUND TIMES: %f, AVG ALL WAITING TIMES: %f",
-                AVGAllCBTs, AVGAllTurnAroundTimes, AVGALLWaitingTimes);
+        printf(1, "AVG ALL CBTS : %d, AVG ALL TURN AROUND TIMES: %d, AVG ALL WAITING TIMES: %d\n\n", (int)AVGAllCBTs, (int)AVGAllTurnAroundTimes, (int)AVGALLWaitingTimes);
     }
     //children go to else
     else{
@@ -111,5 +110,5 @@ int main()
     while (wait() != -1)
         ;
 
-    return 0;
+    exit();
 }
