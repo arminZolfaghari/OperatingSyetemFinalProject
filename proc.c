@@ -101,6 +101,7 @@ found:
   p->state = EMBRYO;
   p->pid = nextpid++;
   p->priority = 3;      //default priority of a process is 3
+  p->layerNo = 0;
 
   release(&ptable.lock);
 
@@ -989,4 +990,19 @@ int waitForPrioritySchedule(int *CWTPTimes)
     // Wait for children to exit.  (See wakeup1 call in proc_exit.)
     sleep(curproc, &ptable.lock);  //DOC: wait-sleep
   }
+
+
+}
+
+
+
+int setLayer(int layer){
+
+  struct proc *curproc = myproc();
+    if (layer > 4 || layer < 1) {
+      return -1;
+    } else {
+      curproc->layerNo = layer;
+      return 0;
+    }
 }

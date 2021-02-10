@@ -37,6 +37,7 @@ int getTotalCBT(int);
 int getTotaltat(int);
 int getTotalwt(int);
 int waitForPrioritySchedule(int *CWTPTimes);
+int setLayer(int);
 
 // ulib.c
 int stat(const char*, struct stat*);

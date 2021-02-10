@@ -232,3 +232,14 @@ int sys_waitForPrioritySchedule(void)
   return waitForPrioritySchedule(CWTPTimes);
   
 }
+
+int sys_setLayer(void)
+{
+  int layer;
+  if (argint(0, &layer) < 1 || layer > 4)
+  {    
+    return -1;
+  }
+  else
+    return setLayer(layer);
+}

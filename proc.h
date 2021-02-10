@@ -57,6 +57,7 @@ struct proc {
   int sleepingTime;            // time amount of process in sleeping state
   int priority;                // priority process 
   int timeQuantum;             // time quantum for rr scheduling
+  int layerNo;                 // layer for multilayerd algorithm;
 };
 
 // Process memory is laid out contiguously, low addresses first:

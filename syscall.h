@@ -34,3 +34,4 @@
 #define SYS_getTotaltat 33
 #define SYS_getTotalwt 34
 #define SYS_waitForPrioritySchedule 35
+#define SYS_setLayer 36
