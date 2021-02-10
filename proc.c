@@ -1005,6 +1005,70 @@ int waitForPrioritySchedule(int *CWTPTimes)
     // Wait for children to exit.  (See wakeup1 call in proc_exit.)
     sleep(curproc, &ptable.lock);  //DOC: wait-sleep
   }
+}
+
+
+
+int waitForMultiLayerSchedule(int *CWTPTimes)
+{
+  //cwtp = CBT, waitingTimes, turnAroundtimes, priority
+  struct proc *p;
+  int havekids, pid;
+  struct proc *curproc = myproc();
+  
+  acquire(&ptable.lock);
+  for(;;){
+    // Scan through table looking for exited children.
+    havekids = 0;
+    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+      if(p->parent != curproc)
+        continue;
+      havekids = 1;
+      if(p->state == ZOMBIE){
+
+        //use getTurnAroundTime , getWaitingTimes, getCBT to calculate times and 
+        //return to parent to calculate average
+        CWTPTimes[0] = getCBT(p->pid);
+        CWTPTimes[1] = getWaitingTime(p->pid);
+        CWTPTimes[2] = getTurnAroundTime(p->pid);
+        CWTPTimes[3] = p->layerNo;
+        CWTPTimes[4] = p->pid;
+
+
+        // Found one.
+        pid = p->pid;
+        kfree(p->kstack);
+        p->kstack = 0;
+        freevm(p->pgdir);
+        p->pid = 0;
+        p->parent = 0;
+        p->name[0] = 0;
+        p->killed = 0;
+        p->state = UNUSED;
+
+        // doroste:?
+        p->creationTime = 0;
+        p->terminationTime = 0;
+        p->runningTime = 0;
+        p->readyTime = 0;
+        p->sleepingTime = 0;
+
+        // p->timeQuantum = 0;
+
+        release(&ptable.lock);
+        return pid;
+      }
+    }
+
+    // No point waiting if we don't have any children.
+    if(!havekids || curproc->killed){
+      release(&ptable.lock);
+      return -1;
+    }
+
+    // Wait for children to exit.  (See wakeup1 call in proc_exit.)
+    sleep(curproc, &ptable.lock);  //DOC: wait-sleep
+  }
 
 
 }

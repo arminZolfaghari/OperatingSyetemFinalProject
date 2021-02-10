@@ -35,24 +35,34 @@ int main()
 
     if (father != getpid())
     {
-        // wait();
+        
         for (int i = 0; i < 200; i++){
             printf(1, "/%d/: /%d/\n", childNumber, i);
-            // wait();
+            
         }
-        
-        int turnAroundTime = getTurnAroundTime(getpid());
-        int waitingTime = getWaitingTime(getpid());
-        int CBT = getCBT(getpid());
 
-        wait();
-
-        printf(1, "\nTurn Around Time for process /%d/ :%d\n", getpid(), turnAroundTime);
-        printf(1, "Waiting Time for process /%d/ :%d\n", getpid(), waitingTime);
-        printf(1, "CBT for process /%d/ :%d\n\n\n", getpid(), CBT);
     } 
     else {
-        wait();
+        int CBTs[30] = {0};
+        int waitingTimes[30] = {0};
+        int turnAroundTimes[30] = {0};
+        int queue[30] = {0};
+
+        int *CWTQTimes = malloc(5 * sizeof(int));
+        childNumber = 0;
+
+        while (waitForMultiLayerSchedule(CWTQTimes) > 0)
+        {
+            CBTs[childNumber] = CWTQTimes[0];
+            waitingTimes[childNumber] = CWTQTimes[1];
+            turnAroundTimes[childNumber] = CWTQTimes[2];
+            queue[childNumber] = CWTQTimes[3];
+            // int pid = CWTPTimes[4];
+            
+            childNumber++;
+        }
+
+
         printf(1, "Total Turn Around Time : %d\n", getTotaltat(getpid()));
         printf(1, "Total Waiting Time : %d\n", getTotalwt(getpid()));
         printf(1, "Total CBT : %d\n\n\n", getTotalCBT(getpid()));
