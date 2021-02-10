@@ -461,8 +461,10 @@ struct proc *p;
   // Loop over process table looking for process to run.
     acquire(&ptable.lock);
     rrType = 0;
-    for(p = ptable.proc; p < &ptable.proc[NPROC/4]; p++){
-      if(p->state != RUNNABLE)
+    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+      if (p->layerNo == 1)
+      {
+        if(p->state != RUNNABLE)
         continue;
 
       // Switch to chosen process.  It is the process's job
@@ -478,6 +480,7 @@ struct proc *p;
       // Process is done running for now.
       // It should have changed its p->state before coming back.
       c->proc = 0;
+      }
     }
 
 //rr:
@@ -487,23 +490,26 @@ struct proc *p;
   // Loop over process table looking for process to run.
     // acquire(&ptable.lock);
     rrType = 1;
-    for(p = &ptable.proc[NPROC/4]; p < &ptable.proc[NPROC/2]; p++){
-      if(p->state != RUNNABLE)
+    for(p = &ptable.proc[NPROC]; p < &ptable.proc[NPROC]; p++){
+      if (p->layerNo == 2)
+      {
+        if(p->state != RUNNABLE)
         continue;
 
-      // Switch to chosen process.  It is the process's job
-      // to release ptable.lock and then reacquire it
-      // before jumping back to us.
-      c->proc = p;
-      switchuvm(p);
-      p->state = RUNNING;
+        // Switch to chosen process.  It is the process's job
+        // to release ptable.lock and then reacquire it
+        // before jumping back to us.
+        c->proc = p;
+        switchuvm(p);
+        p->state = RUNNING;
 
-      swtch(&(c->scheduler), p->context);
-      switchkvm();
+        swtch(&(c->scheduler), p->context);
+        switchkvm();
 
-      // Process is done running for now.
-      // It should have changed its p->state before coming back.
-      c->proc = 0;
+        // Process is done running for now.
+        // It should have changed its p->state before coming back.
+        c->proc = 0;
+      }
     }
 
 
@@ -513,28 +519,31 @@ struct proc *p;
   c->proc = 0;
   struct proc *highPriorityP = 0;
   // acquire(&ptable.lock);
-  for (p = &ptable.proc[NPROC/2]; p < &ptable.proc[3*NPROC/4]; p++)
-  {
-    if (p->state != RUNNABLE)
+  for (p = &ptable.proc[NPROC]; p < &ptable.proc[NPROC]; p++) {
+
+    if (p->layerNo == 3)
+    {
+      if (p->state != RUNNABLE)
         continue;
     
-    highPriorityP = p;
-    //chose one with highest priority
-    for (p1 = &ptable.proc[NPROC/2]; p1 < &ptable.proc[3*NPROC/4]; p1++)
-    {
-      if (p1->state != RUNNABLE)
-          continue;
-      if (highPriorityP->priority > p1->priority)
-          highPriorityP = p1;
-    }
-    p = highPriorityP;
-    c->proc = p;
-    switchuvm(p);
-    p->state = RUNNING;
+      highPriorityP = p;
+      //chose one with highest priority
+      for (p1 = &ptable.proc[NPROC/2]; p1 < &ptable.proc[3*NPROC/4]; p1++)
+      {
+        if (p1->state != RUNNABLE)
+            continue;
+        if (highPriorityP->priority > p1->priority)
+            highPriorityP = p1;
+      }
+      p = highPriorityP;
+      c->proc = p;
+      switchuvm(p);
+      p->state = RUNNING;
 
-    swtch(&(c->scheduler), p->context);
-    switchkvm();
-    c->proc = 0;
+      swtch(&(c->scheduler), p->context);
+      switchkvm();
+      c->proc = 0;
+    }
   }
 
 //rev prio:
@@ -545,27 +554,31 @@ struct proc *p;
   // acquire(&ptable.lock);
   for (p = &ptable.proc[3*NPROC/4]; p < &ptable.proc[NPROC]; p++)
   {
-    if (p->state != RUNNABLE)
+    if (p->layerNo == 4)
+    {
+      if (p->state != RUNNABLE)
         continue;
     
-    highPriorityPrev = p;
-    //chose one with highest priority
-    for (p1 = &ptable.proc[3*NPROC/4]; p1 < &ptable.proc[NPROC]; p1++)
-    {
-      if (p1->state != RUNNABLE)
-          continue;
-      if (highPriorityPrev->priority < p1->priority)
-          highPriorityPrev = p1;
-    }
-    p = highPriorityPrev;
-    c->proc = p;
-    switchuvm(p);
-    p->state = RUNNING;
+      highPriorityPrev = p;
+      //chose one with highest priority
+      for (p1 = &ptable.proc[3*NPROC/4]; p1 < &ptable.proc[NPROC]; p1++)
+      {
+        if (p1->state != RUNNABLE)
+            continue;
+        if (highPriorityPrev->priority < p1->priority)
+            highPriorityPrev = p1;
+      }
+      p = highPriorityPrev;
+      c->proc = p;
+      switchuvm(p);
+      p->state = RUNNING;
 
-    swtch(&(c->scheduler), p->context);
-    switchkvm();
-    c->proc = 0;
+      swtch(&(c->scheduler), p->context);
+      switchkvm();
+      c->proc = 0;
+    }
   }
+
   release(&ptable.lock);
 }
 
