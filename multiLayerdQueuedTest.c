@@ -4,21 +4,40 @@
 
 int main()
 {
-    printf(1, "/%d/\n\n", changePolicy(3));
+    printf(1, "\n Policy: /%d/\n\n", changePolicy(3));
+
+    // int childNums = 40;
+    // int childNumber = 0;
 
     int father = getpid();
     for (int i = 0; i < 40; i++)
     {
         if (fork() > 0)
             break;
+
+        if (i >= 0 && i < 10) {
+            setLayer(1);
+        }
+        else if (i >= 10 && i < 20){
+            setLayer(2);
+            setPriority(i % 6 + 1);
+        }
+        else if (i >= 20 && i < 30){
+            setLayer(3);
+            setPriority(i % 6 + 1);
+        }
+        else if (i >= 30 && i < 40){
+            setLayer(4);
+        }
+        // childNumber = i + 1;
     }
 
     if (father != getpid())
     {
-        wait();
+        // wait();
         for (int i = 0; i < 200; i++){
             printf(1, "/%d/: %d\n", getpid(), i);
-            wait();
+            // wait();
         }
         
         int turnAroundTime = getTurnAroundTime(getpid());

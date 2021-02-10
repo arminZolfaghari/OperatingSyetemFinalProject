@@ -332,6 +332,8 @@ wait(void)
         p->readyTime = 0;
         p->sleepingTime = 0;
 
+        p->layerNo = 0;
+
         // p->timeQuantum = 0;
 
         release(&ptable.lock);
