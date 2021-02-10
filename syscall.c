@@ -118,6 +118,7 @@ extern int sys_getTotaltat(void);
 extern int sys_getTotalwt(void);
 extern int sys_waitForPrioritySchedule(void);
 extern int sys_setLayer(void);
+extern int sys_waitForMultiLayerSchedule(void);
 
 
 
@@ -158,6 +159,7 @@ static int (*syscalls[])(void) = {
 [SYS_getTotalwt] sys_getTotalwt,
 [SYS_waitForPrioritySchedule] sys_waitForPrioritySchedule,
 [SYS_setLayer] sys_setLayer,
+[SYS_waitForMultiLayerSchedule] sys_waitForMultiLayerSchedule,
 };
 
 

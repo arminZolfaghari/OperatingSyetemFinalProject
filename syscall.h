@@ -35,3 +35,4 @@
 #define SYS_getTotalwt 34
 #define SYS_waitForPrioritySchedule 35
 #define SYS_setLayer 36
+#define SYS_waitForMultiLayerSchedule 36

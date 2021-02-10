@@ -1032,7 +1032,7 @@ int waitForMultiLayerSchedule(int *CWTPTimes)
         CWTPTimes[1] = getWaitingTime(p->pid);
         CWTPTimes[2] = getTurnAroundTime(p->pid);
         CWTPTimes[3] = p->layerNo;
-        CWTPTimes[4] = p->pid;
+        CWTPTimes[4] = p->priority;
 
 
         // Found one.

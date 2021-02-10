@@ -233,6 +233,16 @@ int sys_waitForPrioritySchedule(void)
   
 }
 
+int sys_waitForMultiLayerSchedule(void)
+{
+  int *CWTQTimes;
+  if (argptr(0, (void *)&CWTQTimes, sizeof(*CWTQTimes) < 0))
+    return -1;
+  
+  return waitForMultiLayerSchedule(CWTQTimes);
+  
+}
+
 int sys_setLayer(void)
 {
   int layer;

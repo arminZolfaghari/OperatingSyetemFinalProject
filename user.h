@@ -37,6 +37,7 @@ int getTotalCBT(int);
 int getTotaltat(int);
 int getTotalwt(int);
 int waitForPrioritySchedule(int *CWTPTimes);
+int waitForMultiLayerSchedule(int *CWTQTimes);
 int setLayer(int);
 
 // ulib.c
