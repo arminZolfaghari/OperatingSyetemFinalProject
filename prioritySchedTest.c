@@ -64,15 +64,52 @@ int main()
         {
             printf(1,"*** childProcess CBT: %d, waiting time: %d,turn around time: %d, priority: %d ***\n",CBTs[i], waitingTimes[i],turnAroundTimes[i], priorities[i]);
         }
+
+        printf(1, "\n\n\n =====> AVERAGE FOR EACH CLASS <=====\n\n");
+        float averageCBTsPerClass[7] = {0};
+        float averageWaitingTimesPerClass[7] = {0};
+        float averageTurnAroundTimesPerClass[7] = {0};
+
         
+        for (int i = 0; i < 30; i++)
+        {
+            averageCBTsPerClass[priorities[i]] += (float)(CBTs[i]/5);
+            averageWaitingTimesPerClass[priorities[i]] += (float)(waitingTimes[i]/5);
+            averageTurnAroundTimesPerClass[priorities[i]] += (float)(turnAroundTimes[i]/5);
+        }
         
-    
+        for (int j = 1; j < 7; j++)
+        {
+            printf(1, "priority: %d, AVG of CBTs: %f, AVG of turnAround times: %f",
+                 "AVG of waiting times: %f\n",
+                j, averageCBTsPerClass[j], averageTurnAroundTimesPerClass[j], averageWaitingTimesPerClass[j]);
+        }
+        
+        printf(1, "\n\n\n ====> AVERAGE FOR ALL CHILDREN <====\n\n");
+
+        float AVGAllCBTs = 0;
+        float AVGAllTurnAroundTimes = 0;
+        float AVGALLWaitingTimes = 0;
+
+        for (int i = 1; i < 7; i++)
+        {
+            AVGAllCBTs += (float)averageCBTsPerClass[i]/6;
+            AVGALLWaitingTimes += (float)averageWaitingTimesPerClass[i]/6;
+            AVGAllTurnAroundTimes += (float)averageTurnAroundTimesPerClass[i]/6;
+        }
+        printf(1,"*******************************************************************");
+
+        printf(1, "AVG ALL CBTS : %f, AVG ALL TURN AROUND TIMES: %f, AVG ALL WAITING TIMES: %f",
+                AVGAllCBTs, AVGAllTurnAroundTimes, AVGALLWaitingTimes);
     }
     //children go to else
     else{
         for (int i = 0; i < 10; i++)
             printf(1, "/%d/: /%d/ \n", childNumber,  i);
     }
+
+    while (wait() != -1)
+        ;
 
     return 0;
 }
