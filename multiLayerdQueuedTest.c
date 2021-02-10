@@ -7,7 +7,7 @@ int main()
     printf(1, "\n Policy: /%d/\n\n", changePolicy(3));
 
     // int childNums = 40;
-    // int childNumber = 0;
+    int childNumber = 0;
 
     int father = getpid();
     for (int i = 0; i < 40; i++)
@@ -35,10 +35,10 @@ int main()
 
     if (father != getpid())
     {
-        wait();
+        // wait();
         for (int i = 0; i < 200; i++){
-            printf(1, "/%d/: /%d/\n", getpid(), i);
-            wait();
+            printf(1, "/%d/: /%d/\n", childNumber, i);
+            // wait();
         }
         
         int turnAroundTime = getTurnAroundTime(getpid());
