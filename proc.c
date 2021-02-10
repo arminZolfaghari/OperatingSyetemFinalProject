@@ -464,7 +464,7 @@ struct proc *p;
     acquire(&ptable.lock);
     rrType = 0;
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-      if (p->layerNo == 1)
+      if (p->layerNo != 2 && p->layerNo != 3 && p->layerNo != 4)
       {
         if(p->state != RUNNABLE)
         continue;
@@ -554,7 +554,7 @@ struct proc *p;
   // c->proc = 0;
   struct proc *highPriorityPrev = 0;
   // acquire(&ptable.lock);
-  for (p = &ptable.proc[3*NPROC/4]; p < &ptable.proc[NPROC]; p++)
+  for (p = &ptable.proc[NPROC]; p < &ptable.proc[NPROC]; p++)
   {
     if (p->layerNo == 4)
     {
